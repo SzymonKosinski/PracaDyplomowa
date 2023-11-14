@@ -1,0 +1,46 @@
+﻿@page
+@model AdminModel
+@{
+    ViewData["Title"] = "Panel Administracyjny";
+}
+
+<form method="post" class="mt-3" asp-action="Update">
+    @if (User.IsInRole("Administrator"))
+    {
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Dodaj uprawnienia pracownicze dla konta</label>
+            <div style="height: 200px; overflow: auto;">
+                <select class="form-select" id="Select" name="Select">
+                    @foreach (var user in Model.AspNetUsers)
+                    {
+                        <option value="@user.Id" id="@user.Id">@user.Email</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <input type="text" id="selectedValue" name="selectedValue" asp-for="selectedValue"/>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <p id="demo"></p>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" id="test" asp-route-value="" class="btn btn-primary">Dodaj</button>
+        </div>
+        </div>
+    }
+    else
+    {
+        // Kod C# w sekcji Razor
+        Response.StatusCode = 403;
+        await Response.WriteAsync("Dostęp zabroniony - Forbidden");
+    }
+        <script type="text/javascript" language="javascript">function test() {
+            document.getElementById('Select1').addEventListener('change', function () {
+                var selectedValue = this.value;
+                document.getElementById('selectedValue').value = selectedValue;
+            });
+            document.getElementById("demo").innerHTML = 5 + 6;
+        }
+            document.getElementById("test").onclick = test;
+    </script>
+</form>
